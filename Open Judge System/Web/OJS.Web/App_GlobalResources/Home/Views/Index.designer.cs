@@ -142,7 +142,7 @@ namespace Resources.Home.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SoftUni Judge.
+        ///   Looks up a localized string similar to Online Judge System.
         /// </summary>
         public static string Project_title {
             get {
