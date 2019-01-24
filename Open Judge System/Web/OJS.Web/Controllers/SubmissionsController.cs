@@ -138,7 +138,7 @@
                     }
                     else
                     {
-                        this.TempData.AddDangerMessage("The service is already running or an error has occurred while starting it.");
+                        this.TempData.AddDangerMessage($"The service is already running or an error has occurred while starting it: {error}");
                     }
                 }
             }
