@@ -5,7 +5,7 @@
         // User Profile Constants
         public const int UsernameMinLength = 5;
         public const int UsernameMaxLength = 32;
-        public const string UsernameRegEx = @"^[a-zA-Z]([/._]?[a-zA-Z0-9]+)+$";
+        public const string UsernameRegEx = "^[a-zA-Z]([@/._]?[a-zA-Z0-9]+)+$|^[A-Za-z0-9]+[\\._A-Za-z0-9-]+@([A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)+(\\.[A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"; //@"^[a-zA-Z]([@/._]?[a-zA-Z0-9]+)+$";
 
         public const int PasswordMinLength = 6;
         public const int PasswordMaxLength = 1000;
