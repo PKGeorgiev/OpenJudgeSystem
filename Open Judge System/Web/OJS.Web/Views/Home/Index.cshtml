@@ -22,10 +22,10 @@
                     ? GlobalConstants.EnglishCultureCookieValue
                     : GlobalConstants.BulgarianCultureCookieValue;
             }
-            <a href="@($"/Content/PublicFiles/SoftUni-Judge-System-Guidelines-{languageSuffix}.pdf")" target="_blank">@Resource.Guidelines_link_title</a>
+            <!--<a href="@($"/Content/PublicFiles/SoftUni-Judge-System-Guidelines-{languageSuffix}.pdf")" target="_blank">@Resource.Guidelines_link_title</a>
             <div class="video-wrapper top-buffer">
                 <iframe src="https://www.youtube.com/embed/IwLET8SDBE4/?autoplay=0&rel=0&showinfo=0" allowfullscreen></iframe>
-            </div>
+            </div>-->
         </div>
         <div class="col-md-5">
             <h2>@Resource.Contest_categories</h2>
@@ -48,11 +48,11 @@
                         {
                             <tr>
                                 <td>
-                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br/>
+                                    <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)"><strong>@contest.Name</strong></a><br />
                                     <small>
                                         @Resource.Remaining_time: @(contest.EndTime.HasValue
-                                            ? TimeHelper.GetReadableRemainingTime(contest.EndTime.Value).ToString()
-                                            : Resource.Infinite)
+? TimeHelper.GetReadableRemainingTime(contest.EndTime.Value).ToString()
+: Resource.Infinite)
                                     </small>
                                 </td>
                                 <td class="participate">

@@ -24,7 +24,8 @@
                 <p>
                     @foreach (AuthenticationDescription p in loginProviders)
                     {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="@string.Format(Resource.External_login_message, p.Caption)">@p.AuthenticationType</button>
+                        var btnClassProvider = string.Format("btn-auth-{0}", @p.AuthenticationType.ToLower());
+                        <button type="submit" class="btn btn-default @btnClassProvider" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="@string.Format(Resource.External_login_message, p.Caption)">@p.AuthenticationType</button>
                     }
                 </p>
             </div>

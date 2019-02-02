@@ -189,7 +189,7 @@
             {
                 if (this.UserProfile.PasswordHash == null)
                 {
-                    messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
+                    //messages.Add(Resources.Base.Main.Password_not_set, SystemMessageType.Warning, 0);
                 }
             }
 

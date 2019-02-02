@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web
 {
     using System;
+    using System.Configuration;
     using Microsoft.AspNet.Identity;
     using Microsoft.Owin;
     using Microsoft.Owin.Security.Cookies;
@@ -29,9 +30,13 @@
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             //// Uncomment the following lines to enable logging in with third party login providers
+
+            string appId = ConfigurationManager.AppSettings.Get("AzureAuthAppId");
+            string appSecret = ConfigurationManager.AppSettings.Get("AzureAuthAppSecret");
+
             app.UseMicrosoftAccountAuthentication(
-                clientId: "",
-                clientSecret: "");
+                clientId: appId,
+                clientSecret: appSecret);
 
             //// app.UseTwitterAuthentication(
             ////   consumerKey: "",
@@ -41,7 +46,7 @@
             ////   appId: "",
             ////   appSecret: "");
 
-            app.UseGoogleAuthentication();
+            //app.UseGoogleAuthentication();
         }
     }
 }

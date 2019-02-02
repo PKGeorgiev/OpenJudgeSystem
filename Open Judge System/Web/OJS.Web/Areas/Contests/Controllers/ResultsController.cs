@@ -80,7 +80,7 @@
                 .Select(ps => new ProblemResultViewModel
                 {
                     SubmissionId = ps.SubmissionId,
-                    ParticipantName = ps.ParticipantName,
+                    ParticipantName = "-", //ps.ParticipantName,
                     MaximumPoints = problem.MaximumPoints,
                     Result = ps.Points
                 })

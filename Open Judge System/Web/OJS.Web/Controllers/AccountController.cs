@@ -201,6 +201,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            // https://stackoverflow.com/a/40801032
+            this.Session["Workaround"] = 0;
+
             // Request a redirect to the external login provider
             return new ChallengeResult(
                 provider,
@@ -211,9 +214,12 @@
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            
             var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
+                this.TempData[GlobalConstants.DangerMessage] = "loginInfo == null";
+
                 return this.RedirectToAction("Login");
             }
 
@@ -329,7 +335,7 @@
 
         [HttpPost]
         public ActionResult LogOff()
-        {
+        {   
             this.AuthenticationManager.SignOut();
             return this.RedirectToAction(GlobalConstants.Index, "Home");
         }
