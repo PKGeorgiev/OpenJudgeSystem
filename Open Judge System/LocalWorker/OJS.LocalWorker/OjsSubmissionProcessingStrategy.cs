@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-
     using OJS.Data.Models;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
@@ -46,12 +45,17 @@
             {
                 if (this.SubmissionsForProcessing.IsEmpty)
                 {
-                    this.submissionsForProcessingData
+                    var sl = this.submissionsForProcessingData
                         .GetAllUnprocessed()
                         .OrderBy(x => x.Id)
                         .Select(x => x.SubmissionId)
-                        .ToList()
-                        .ForEach(this.SubmissionsForProcessing.Enqueue);
+                        .ToList();
+
+                    this.Logger.Information(
+                        "Retrieved {SubmissionsCount} submissions from DB: {RetrievedSubmissions}",
+                        sl);
+
+                    sl.ForEach(this.SubmissionsForProcessing.Enqueue);
                 }
 
                 var isSubmissionRetrieved = this.SubmissionsForProcessing.TryDequeue(out var submissionId);
@@ -61,7 +65,7 @@
                     return null;
                 }
 
-                this.Logger.InfoFormat($"Submission #{submissionId} retrieved from data store successfully");
+                this.Logger.Information("Submission {Submission} retrieved from data store successfully", submissionId);
 
                 this.submission = this.submissionsData.GetById(submissionId);
 
@@ -69,7 +73,7 @@
 
                 if (this.submission == null || this.submissionForProcessing == null)
                 {
-                    this.Logger.Error($"Cannot retrieve submission #{submissionId} from database");
+                    this.Logger.Error("Cannot retrieve submission {Submission} from database", submissionId);
                     return null;
                 }
 
@@ -94,6 +98,8 @@
 
         protected override void ProcessTestsExecutionResult(IExecutionResult<TestResult> executionResult)
         {
+            this.Logger.Information("Submission {Submission}: Processing execution result {@ExecutionResult} ", this.submission.Id, executionResult);
+
             this.submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
             this.submission.CompilerComment = executionResult.CompilerComment;
 
@@ -127,6 +133,8 @@
 
         private void UpdateResults()
         {
+            this.Logger.Information("Submission {Submission}: Executing method {Method}", this.submission.Id, nameof(this.UpdateResults));
+
             this.CalculatePointsForSubmission();
 
             this.SaveParticipantScore();
@@ -155,8 +163,8 @@
             }
             catch (Exception ex)
             {
-                this.Logger.ErrorFormat(
-                    "CalculatePointsForSubmission on submission #{0} has thrown an exception: {1}",
+                this.Logger.Error(
+                    "CalculatePointsForSubmission on {Submission} has thrown an exception",
                     this.submission.Id,
                     ex);
 
@@ -218,8 +226,8 @@
             }
             catch (Exception ex)
             {
-                this.Logger.ErrorFormat(
-                    "SaveParticipantScore on submission #{0} has thrown an exception: {1}",
+                this.Logger.Error(
+                    "SaveParticipantScore on {Submission} has thrown an exception",
                     this.submission.Id,
                     ex);
 
@@ -240,8 +248,8 @@
             }
             catch (Exception ex)
             {
-                this.Logger.ErrorFormat(
-                    "Unable to save changes to the submission #{0}! Exception: {1}",
+                this.Logger.Error(
+                    "Unable to save changes to the {Submission}! Exception!",
                     this.submission.Id,
                     ex);
             }
@@ -258,8 +266,8 @@
             }
             catch (Exception ex)
             {
-                this.Logger.ErrorFormat(
-                    "Unable to set submission #{0} to processing! Exception: {1}",
+                this.Logger.Error(
+                    "Unable to set {Submission} to processing! Exception!",
                     this.submission.Id,
                     ex);
             }
@@ -273,8 +281,8 @@
             }
             catch (Exception ex)
             {
-                this.Logger.ErrorFormat(
-                    "CacheTestRuns on submission #{0} has thrown an exception: {1}",
+                this.Logger.Error(
+                    "CacheTestRuns on {Submission} has thrown an Exception!",
                     this.submission.Id,
                     ex);
 

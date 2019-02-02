@@ -20,7 +20,7 @@
             }
             catch (Exception ex)
             {
-                this.Logger.Warn("Cannot encrypt App.config", ex);
+                this.Logger.Error("Cannot encrypt App.config", ex);
             }
 
             try
@@ -35,7 +35,7 @@
             }
             catch (Exception ex)
             {
-                this.Logger.FatalFormat($"Resetting Processing submissions failed with exception {ex.Message}");
+                this.Logger.Error($"Resetting Processing submissions failed", ex);
                 throw;
             }
 
@@ -46,7 +46,8 @@
             catch (Exception ex)
             {
                 this.Logger.Error(
-                    $"An exception was thrown while attempting to start the {Constants.LocalWorkerMonitoringServiceName}",
+                    "An exception was thrown while attempting to start the {Service}", 
+                    Constants.LocalWorkerMonitoringServiceName, 
                     ex);
             }
 
@@ -61,7 +62,7 @@
             }
             catch (Exception ex)
             {
-                this.Logger.Warn("Cannot decrypt App.config", ex);
+                this.Logger.Error("Cannot decrypt App.config", ex);
             }
 
             base.BeforeAbortingThreads();
@@ -74,11 +75,11 @@
             var serviceState = ServicesHelper.GetServiceState(monitoringServiceName);
             if (serviceState.Equals(ServiceState.Running))
             {
-                this.Logger.Info($"{monitoringServiceName} is running.");
+                this.Logger.Information("{Service} is running.", monitoringServiceName);
                 return;
             }
 
-            this.Logger.Info($"Attempting to start the {monitoringServiceName}...");
+            this.Logger.Information("Attempting to start the {Service}...", monitoringServiceName);
 
             if (serviceState.Equals(ServiceState.NotFound))
             {
@@ -87,7 +88,7 @@
 
             ServicesHelper.StartService(monitoringServiceName);
 
-            this.Logger.Info($"{monitoringServiceName} started successfully.");
+            this.Logger.Information("{Service} started successfully.", monitoringServiceName);
         }
     }
 }

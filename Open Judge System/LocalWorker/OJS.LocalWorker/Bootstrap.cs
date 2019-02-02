@@ -15,7 +15,7 @@
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.SubmissionProcessors;
-
+    using Serilog;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
@@ -36,6 +36,14 @@
 
         private static void RegisterTypes(Container container)
         {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.WithThreadId()
+                .Enrich.WithProcessId()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
+
+            container.Register<ILogger>(() => Log.Logger, Lifestyle.Singleton);
+
             container.Register<OjsDbContext>(Lifestyle.Scoped);
             container.Register<ArchivesDbContext>(Lifestyle.Scoped);
             container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
