@@ -51,9 +51,13 @@
                         .Select(x => x.SubmissionId)
                         .ToList();
 
-                    this.Logger.Information(
-                        "Retrieved {SubmissionsCount} submissions from DB: {RetrievedSubmissions}",
-                        sl);
+                    if (sl.Count > 0)
+                    {
+                        this.Logger.Information(
+                            "Retrieved {SubmissionsCount} submissions from DB: {RetrievedSubmissions}",
+                            sl.Count,
+                            sl);
+                    }
 
                     sl.ForEach(this.SubmissionsForProcessing.Enqueue);
                 }
