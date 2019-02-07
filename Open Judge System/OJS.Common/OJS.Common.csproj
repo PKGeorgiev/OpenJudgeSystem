@@ -119,6 +119,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumTranslations.resx</DependentUpon>
     </Compile>
+    <Compile Include="SignalR\SrServerNotification.cs" />
+    <Compile Include="SignalR\SrServerNotificationType.cs" />
     <Compile Include="SynchronizedHashtable.cs" />
     <Compile Include="Helpers\TransactionsHelper.cs" />
     <Compile Include="UrlConstants.cs" />

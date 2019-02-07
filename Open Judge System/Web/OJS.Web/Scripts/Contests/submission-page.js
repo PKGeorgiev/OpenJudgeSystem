@@ -60,7 +60,7 @@ function Notifier() {
         var notification = $('<div/>', {
             text: data.message,
             'class': data.cssClass,
-            style: 'display: none'
+            style: 'display: none; margin-bottom: 6px; border: 1px solid Gainsboro;'
         }).appendTo(container);
 
         notification.show({
@@ -68,6 +68,7 @@ function Notifier() {
         });
 
         if (data.response) {
+            //console.log(data);
             var grid = $('#Submissions_' + data.response).getKendoGrid();
             if (grid) {
                 grid.dataSource.read();
@@ -80,7 +81,7 @@ function Notifier() {
             notification.hide(500, function () {
                 notification.remove();
             });
-        }, 3500);
+        }, 4500);
     }
 
     function notifySuccess(response) {
@@ -375,6 +376,7 @@ $(document).ready(function () {
 function cloneSubmissionsGridPager() {
     'use strict';
 
+    return;
     var self = this; // submission grid
     if (self.dataSource.total() && typeof(self.pagerTop) === 'undefined') {
         var wrapper = $('<div class="k-pager-wrap k-grid-pager pagerTop"/>').insertAfter(self.element.find('.k-toolbar'));

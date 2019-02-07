@@ -46,34 +46,34 @@
 <div class="row">
     <div class="col-md-12">
         @(Html.Kendo().TabStrip()
-            .Name("SubmissionsTabStrip")
-            .Items(tabstrip =>
-            {
-                foreach (var problem in Model.Contest.Problems)
-                {
-                    var excludedFromExportClass = problem.IsExcludedFromHomework ? "excluded-from-homework-tab" : string.Empty;
+                    .Name("SubmissionsTabStrip")
+                    .Items(tabstrip =>
+                    {
+                        foreach (var problem in Model.Contest.Problems)
+                        {
+                            var excludedFromExportClass = problem.IsExcludedFromHomework ? "excluded-from-homework-tab" : string.Empty;
 
-                    tabstrip.Add()
-                        .Text(problem.Name)
-                        .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }))
-                        .HtmlAttributes(new { @class = excludedFromExportClass });
-                }
+                            tabstrip.Add()
+                                .Text(problem.Name)
+                                .LoadContentFrom(Url.Action("Problem", new { id = problem.ProblemId, controller = ViewBag.CompeteType }))
+                                .HtmlAttributes(new { @class = excludedFromExportClass });
+                        }
 
-                if (!Model.Contest.Problems.Any())
-                {
-                    tabstrip.Add().Text(Resource.No_tasks).Content(Resource.No_tasks_added_yet);
-                }
+                        if (!Model.Contest.Problems.Any())
+                        {
+                            tabstrip.Add().Text(Resource.No_tasks).Content(Resource.No_tasks_added_yet);
+                        }
 
-                if (User.IsAdmin())
-                {
-                    tabstrip.Add().Text(Resource.Add_task).Action("Create", "Problems", new { Area = "Administration", Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
-                }
-            })
-            .Events(ev =>
-            {
-                ev.ContentLoad("tabStripManager.onContentLoad");
-                ev.Activate("tabStripManager.tabSelected");
-            }))
+                        if (User.IsAdmin())
+                        {
+                            tabstrip.Add().Text(Resource.Add_task).Action("Create", "Problems", new { Area = "Administration", Model.Contest.Id }).HtmlAttributes(new { target = "_blank" });
+                        }
+                    })
+                    .Events(ev =>
+                    {
+                        ev.ContentLoad("tabStripManager.onContentLoad");
+                        ev.Activate("tabStripManager.tabSelected");
+                    }))
     </div>
 </div>
 
@@ -160,4 +160,40 @@
             }
         }
     </script>
+
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        $(function () {
+            // Reference the auto-generated proxy for the hub.
+            var chat = $.connection.ojsHub;
+            // Create a function that the hub can call back to display messages.
+            chat.client.refreshGrid = function (competitionId, problemId, submissionId) {
+                console.log(problemId);
+
+                setTimeout(function () {
+                    console.log("Refreshing!");
+                    messageNotifier.showMessage({
+                        message: "Вашето решение беше тествано! Можете да проверите резултата.",
+                        cssClass: "alert alert-info",
+                        response: problemId
+                    });
+                }, 300);
+            };
+
+            $.connection.hub.start().done(function () {
+                console.log("Connected to HUB!");
+
+            });
+
+            $.connection.hub.disconnected(function () {
+                setTimeout(function () {
+                    console.log("Reconnecting to the HUB");
+                    $.connection.hub.start();
+                }, 5000); // Restart connection after 5 seconds.
+            });
+        });
+    </script>
+
 }

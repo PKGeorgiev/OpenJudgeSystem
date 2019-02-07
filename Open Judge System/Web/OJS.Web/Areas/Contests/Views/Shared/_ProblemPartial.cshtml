@@ -28,14 +28,14 @@
             @Html.ActionLink(Resource.Delete_admin_button, "Delete", "Problems", new { Area = "Administration", Id = Model.ProblemId }, new { @class = "btn btn-sm btn-primary" })
         </div>
     }
-    <div class="col-md-12">
-        <div id="notify-container-@(Model.ProblemId)">
+    <div class="col-md-7" style="position: fixed; top: 6px; right: 0; left: 0; z-index: 9999; margin-left: auto; margin-right: auto;">
+        <div id="notify-container-@(Model.ProblemId)" border border-dark>
         </div>
     </div>
 </div>
 
 @{
-    var className = Model.ShowResults ? "col-lg-8" : "col-lg-12";
+    var className = "col-lg-12"; // Model.ShowResults ? "col-lg-8" : "col-lg-12";
 }
 
 <div class="row">
@@ -101,17 +101,22 @@
                 </div>
                 <div class="col-md-12">
                     <div class="pull-left submit-container">
-                        <strong>@Resource.Allowed_working_time:</strong> @string.Format("{0:0.000}", Model.TimeLimit) sec.
-                        <br />
-                        <strong>@Resource.Allowed_memory:</strong> @string.Format("{0:0.00}", Model.MemoryLimit) MB
-                        <br />
-                        @if (Model.FileSizeLimit.HasValue)
-                        {
-                            <strong>Size limit:</strong> @(string.Format("{0:0.00}", Model.FileSizeLimit.Value)) @:KB
-                            <br />
-                        }
-
-                        <strong>Checker:</strong> @Model.CheckerName <span class="glyphicon glyphicon-question-sign" id="checkers-tooltip"></span>
+                        <table>
+                            <tr>
+                                <td><strong>Time:</strong> @string.Format("{0:0.000}", Model.TimeLimit) sec.</td>
+                                <td style="padding-left: 6px;">
+                                    @if (Model.FileSizeLimit.HasValue)
+                                    {
+                                        <strong> | Size limit:</strong> @(string.Format("{0:0.00}", Model.FileSizeLimit.Value)) @:KB
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Memory:</strong> @string.Format("{0:0.00}", Model.MemoryLimit) MB</td>
+                                <td style="padding-left: 6px;"><strong> | Checker:</strong> @Model.CheckerName <span class="glyphicon glyphicon-question-sign" id="checkers-tooltip"></span></td>
+                            </tr>
+                        </table>                       
+                        
                     </div>
                     <div class="submit-container pull-right">
                         <script>
@@ -197,7 +202,7 @@
         }
     }
 
-    @if (Model.ShowResults)
+    @if (false) // (Model.ShowResults)
     {
         <div class="col-lg-4 problem-result-container visible-lg">
             @(Html.Kendo()
@@ -343,3 +348,5 @@ else
         </li>
     </ul>
 </script>
+
+

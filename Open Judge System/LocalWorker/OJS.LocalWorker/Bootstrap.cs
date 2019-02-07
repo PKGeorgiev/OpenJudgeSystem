@@ -18,6 +18,7 @@
     using Serilog;
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
+    using OJS.Services.SignalR;
 
     internal class Bootstrap
     {
@@ -43,6 +44,8 @@
                 .CreateLogger();
 
             container.Register<ILogger>(() => Log.Logger, Lifestyle.Singleton);
+
+            container.Register<IOjsHubService>(() => new OjsHubService("https://localhost:44307", Log.Logger), Lifestyle.Singleton);
 
             container.Register<OjsDbContext>(Lifestyle.Scoped);
             container.Register<ArchivesDbContext>(Lifestyle.Scoped);

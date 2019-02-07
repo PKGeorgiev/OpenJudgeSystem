@@ -413,3 +413,10 @@ input[type="checkbox"].input-validation-error {
             float: none;
         }
 }
+
+.alert {
+    -webkit-box-shadow: 0px 0px 8px rgba(4, 4, 4, 0.4);
+    -moz-box-shadow: 0px 0px 8px rgba(4, 4, 4, 0.4);
+    box-shadow: 0px 0px 8px rgba(4, 4, 4, 0.4);
+    border-radius: 4px 4px;
+}

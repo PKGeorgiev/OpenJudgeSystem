@@ -1,4 +1,7 @@
-﻿namespace OJS.Web.Controllers
+﻿using Microsoft.AspNet.SignalR;
+using OJS.Web.Infrastructure.Hubs;
+
+namespace OJS.Web.Controllers
 {
     using System.Linq;
     using System.Text;
@@ -20,6 +23,9 @@
 
         public ActionResult Index()
         {
+            var tmp = GlobalHost.ConnectionManager.GetHubContext<OjsHub>();
+            tmp.Clients.All.addNewMessageToPage("Home", "Index");
+
             var indexViewModel = new IndexViewModel
             {
                 ActiveContests = this.contestsData
